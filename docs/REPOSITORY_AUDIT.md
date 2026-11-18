@@ -74,6 +74,16 @@ The supplied repository was empty. The current implementation is a new Laravel 1
 - Submission, confirmation and failure notifications
 - Cross-user transaction access tests
 
+## Phase 6 implementation
+
+- Protected administrator dashboard
+- Non-secret application and account metrics
+- Database and application health indicators
+- User account status management
+- Allowlisted maintenance notice and support-status settings
+- Redacted audit event storage
+- Administrator route and user-management authorization tests
+
 ## Missing functionality
 
 Balance retrieval and transaction requirements remain for later phases. Full administrator monitoring remains pending.

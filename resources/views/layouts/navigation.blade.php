@@ -27,6 +27,11 @@
                     <x-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.*')">
                         {{ __('Notifications') }}
                     </x-nav-link>
+                    @if (Auth::user()->isAdmin())
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                            {{ __('Admin') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

@@ -29,7 +29,7 @@ class AuthorizationTest extends TestCase
         $this->actingAs($admin)
             ->get('/admin')
             ->assertOk()
-            ->assertSee('Administrative access verified.');
+            ->assertSee('Operational health');
     }
 
     public function test_suspended_administrator_cannot_open_administrator_dashboard(): void

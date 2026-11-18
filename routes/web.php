@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\WalletController;
@@ -29,8 +30,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/notifications/{notification}/read', [TransactionController::class, 'markNotificationRead'])->name('notifications.read');
 });
 
-Route::middleware(['auth', 'verified', 'admin'])
-    ->get('/admin', fn () => view('admin.dashboard'))
-    ->name('admin.dashboard');
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::patch('/users/{user}/status', [AdminController::class, 'updateStatus'])->name('users.status');
+    Route::get('/logs', [AdminController::class, 'logs'])->name('logs');
+    Route::patch('/settings', [AdminController::class, 'settings'])->name('settings');
+});
 
 require __DIR__.'/auth.php';
