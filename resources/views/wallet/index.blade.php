@@ -27,6 +27,20 @@
                         </div>
                     </dl>
 
+                    <div class="mt-6 rounded-md border border-gray-200 p-4 dark:border-gray-700">
+                        <div class="flex flex-wrap items-start justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Sepolia test-ETH balance') }}</p>
+                                <p id="wallet-balance" class="mt-1 text-2xl font-semibold tabular-nums">Not connected</p>
+                                <p id="balance-status" class="mt-1 text-xs text-gray-500">Not retrieved</p>
+                            </div>
+                            <button id="refresh-balance" type="button"
+                                    class="rounded-md border border-green-700 px-3 py-2 text-sm font-semibold text-green-700 dark:text-green-300">
+                                {{ __('Refresh balance') }}
+                            </button>
+                        </div>
+                    </div>
+
                     <p id="wallet-status" class="mt-6 text-sm" role="status" aria-live="polite">
                         {{ __('Checking browser wallet...') }}
                     </p>

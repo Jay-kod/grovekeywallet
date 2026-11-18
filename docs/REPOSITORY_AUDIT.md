@@ -43,6 +43,15 @@ The supplied repository was empty. The current implementation is a new Laravel 1
 - Public-address-only server persistence
 - User-owned wallet-link removal
 - Cross-user access protection tests
+ 
+## Phase 3 implementation
+
+- Dashboard and wallet-page Sepolia test-ETH balance card
+- Precision-safe wei-to-ETH formatting with BigInt
+- Browser-provider `eth_getBalance` reads
+- Loading, wrong-network and unavailable-balance states
+- Manual refresh control and refresh timestamp
+- No server-side balance cache or fabricated balance data
 
 ## Missing functionality
 

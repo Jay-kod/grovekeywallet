@@ -2,7 +2,7 @@
 
 ## Current phase
 
-- Phase: Phase 2 - wallet connection and network identification
+- Phase: Phase 3 - balance and dashboard
 - Status: Complete
 - Last updated: 2026-11-18
 - Repository: https://github.com/Jay-kod/grovekeywallet.git
@@ -20,7 +20,9 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 | FR-03 | Not enabled | No additional verification implementation |
 | FR-04 | Implemented | EIP-1193 connection and public wallet profile implemented |
 | FR-05 | Implemented | Public address and Sepolia network displayed |
-| FR-06 to FR-12 | Missing | Balance and transaction phases not started |
+| FR-06 | Implemented | Browser-provider `eth_getBalance` retrieval with Sepolia labelling |
+| FR-07 to FR-12 | Missing | Transaction phases not started |
+| FR-11 | Partial | No persisted transactions yet; recent activity remains pending |
 | FR-13 | Partial | Protected administrator route; operational features pending |
 | FR-14 | Implemented | Logout test passes |
 
@@ -35,6 +37,7 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 | `npm audit --omit=dev` | 0 production vulnerabilities |
 | `npm run build` | Pass | Vite wallet assets built successfully |
 | Wallet feature suite | Pass | 36 tests, 87 assertions |
+| Wallet balance UI tests | Pass | 38 feature tests, 94 assertions |
 
 ## Security review
 
@@ -45,7 +48,9 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 - Registration cannot assign administrator role
 - Suspended accounts cannot access the administrator route
 - Sepolia wallet enforcement is not implemented until Phase 2
+- Live balance is requested only when the provider reports chain ID 11155111
+- Invalid or unavailable RPC balances are never converted into success values
 
 ## Next action
 
-Begin Phase 3: live Sepolia test-ETH balance retrieval and dashboard activity states.
+Begin Phase 4: transaction preparation and browser-wallet submission.

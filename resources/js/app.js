@@ -14,6 +14,9 @@ if (walletRoot) {
     const chainOutput = walletRoot.querySelector('#wallet-chain');
     const connectButton = walletRoot.querySelector('#connect-wallet');
     const switchButton = walletRoot.querySelector('#switch-sepolia');
+    const balanceOutput = walletRoot.querySelector('#wallet-balance');
+    const balanceStatus = walletRoot.querySelector('#balance-status');
+    const refreshBalanceButton = walletRoot.querySelector('#refresh-balance');
     const connectUrl = walletRoot.dataset.connectUrl;
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 
@@ -32,6 +35,58 @@ if (walletRoot) {
 
     function shortenedAddress(address) {
         return `${address.slice(0, 8)}...${address.slice(-6)}`;
+    }
+
+    function formatSepoliaBalance(weiHex) {
+        const wei = BigInt(weiHex);
+        const divisor = 1000000000000000000n;
+        const whole = wei / divisor;
+        const fraction = (wei % divisor).toString().padStart(18, '0').replace(/0+$/, '').slice(0, 6);
+
+        return fraction ? `${whole}.${fraction}` : whole.toString();
+    }
+
+    function setBalanceUnknown(message = 'Balance unavailable') {
+        if (balanceOutput) balanceOutput.textContent = message;
+        if (balanceStatus) balanceStatus.textContent = 'Not retrieved';
+    }
+
+    async function refreshBalance(address) {
+        const injected = provider();
+        if (!injected || !address) {
+            setBalanceUnknown('Not connected');
+            return;
+        }
+
+        const hexChainId = await injected.request({ method: 'eth_chainId' }).catch(() => null);
+        if (!hexChainId || chainIdFromHex(hexChainId) !== 11155111) {
+            setBalanceUnknown('Wrong network');
+            return;
+        }
+
+        if (balanceOutput) balanceOutput.textContent = 'Loading...';
+        if (balanceStatus) balanceStatus.textContent = 'Querying Ethereum Sepolia';
+
+        try {
+            const weiHex = await injected.request({
+                method: 'eth_getBalance',
+                params: [address, 'latest'],
+            });
+
+            if (typeof weiHex !== 'string' || !/^0x[0-9a-f]+$/i.test(weiHex)) {
+                throw new Error('The wallet provider returned an invalid balance response.');
+            }
+
+            if (balanceOutput) balanceOutput.textContent = `${formatSepoliaBalance(weiHex)} Sepolia test ETH`;
+            if (balanceStatus) {
+                balanceStatus.textContent = `Last refreshed ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+            }
+        } catch (error) {
+            setBalanceUnknown('Unavailable');
+            setStatus(error?.code === -32000
+                ? 'Sepolia RPC is unavailable or rate-limited. Balance was not estimated.'
+                : 'Unable to retrieve the Sepolia balance. No balance was fabricated.', 'error');
+        }
     }
 
     async function persistWallet(address, chainId) {
@@ -84,6 +139,7 @@ if (walletRoot) {
                 chainOutput.textContent = `Wrong network (${chainId})`;
                 setStatus('Wrong network. Switch the browser wallet to Ethereum Sepolia (11155111).', 'error');
                 switchButton.hidden = false;
+                setBalanceUnknown('Wrong network');
                 return;
             }
 
@@ -91,6 +147,7 @@ if (walletRoot) {
             await persistWallet(address, chainId);
             setStatus('Connected to Ethereum Sepolia.', 'success');
             switchButton.hidden = true;
+            await refreshBalance(address);
         } catch (error) {
             setStatus(error.message || 'Unable to read the browser wallet.', 'error');
         }
@@ -124,6 +181,17 @@ if (walletRoot) {
             await injected.request({
                 method: 'wallet_switchEthereumChain',
                 params: [{ chainId: '0xaa36a7' }],
+            });
+
+            refreshBalanceButton?.addEventListener('click', async () => {
+                const injected = provider();
+                if (!injected) {
+                    setBalanceUnknown('Not connected');
+                    return;
+                }
+
+                const accounts = await injected.request({ method: 'eth_accounts' }).catch(() => []);
+                await refreshBalance(accounts[0]);
             });
         } catch (error) {
             if (error?.code === 4902) {

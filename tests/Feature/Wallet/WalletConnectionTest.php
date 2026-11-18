@@ -107,4 +107,27 @@ class WalletConnectionTest extends TestCase
             ->assertSee('0x1111111111111111111111111111111111111111')
             ->assertDontSee('0x2222222222222222222222222222222222222222');
     }
+
+    public function test_wallet_page_labels_live_balance_as_sepolia_test_eth(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/wallet')
+            ->assertOk()
+            ->assertSee('Sepolia test-ETH balance')
+            ->assertSee('Refresh balance');
+    }
+
+    public function test_dashboard_shows_sepolia_balance_states(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/dashboard')
+            ->assertOk()
+            ->assertSee('Sepolia wallet')
+            ->assertSee('Sepolia test-ETH balance')
+            ->assertSee('Refresh balance');
+    }
 }
