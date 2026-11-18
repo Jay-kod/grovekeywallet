@@ -32,9 +32,21 @@ The supplied repository was empty. The current implementation is a new Laravel 1
 - Role-mass-assignment test
 - Guest, regular-user and suspended-user authorization tests
 
+## Phase 2 implementation
+
+- Wallet profile migration, model and user relationship
+- EIP-1193 browser wallet detection
+- User-initiated `eth_requestAccounts` connection
+- Ethereum Sepolia chain verification
+- Wrong-network switch guidance
+- Account and chain change listeners
+- Public-address-only server persistence
+- User-owned wallet-link removal
+- Cross-user access protection tests
+
 ## Missing functionality
 
-All wallet and blockchain requirements remain for Phases 2 onward: wallet connection, public address, balance, transaction review/signing/submission, status tracking, history, notifications and full administrator monitoring.
+Balance retrieval and transaction requirements remain for later phases. Full administrator monitoring remains pending.
 
 ## Security
 

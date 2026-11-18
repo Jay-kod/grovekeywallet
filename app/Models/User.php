@@ -39,4 +39,9 @@ class User extends Authenticatable
     {
         return $this->status === 'active';
     }
+
+    public function walletProfiles()
+    {
+        return $this->hasMany(WalletProfile::class);
+    }
 }
