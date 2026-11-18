@@ -64,6 +64,16 @@ The supplied repository was empty. The current implementation is a new Laravel 1
 - Hash persistence only after wallet submission
 - Server ownership and Sepolia-chain validation
 
+## Phase 5 implementation
+
+- Transaction receipt fields and reconciliation timestamps
+- Browser-provider receipt polling
+- Submitted, pending, confirmed, failed/reverted and unknown states
+- User-scoped transaction history and detail views
+- Sepolia block-explorer links
+- Submission, confirmation and failure notifications
+- Cross-user transaction access tests
+
 ## Missing functionality
 
 Balance retrieval and transaction requirements remain for later phases. Full administrator monitoring remains pending.

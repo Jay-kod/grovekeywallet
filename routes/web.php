@@ -22,6 +22,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/wallet/{walletProfile}', [WalletController::class, 'destroy'])->name('wallet.destroy');
     Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
     Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{transactionRecord}', [TransactionController::class, 'show'])->name('transactions.show');
+    Route::post('/transactions/{transactionRecord}/reconcile', [TransactionController::class, 'reconcile'])->name('transactions.reconcile');
+    Route::get('/notifications', [TransactionController::class, 'notifications'])->name('notifications.index');
+    Route::post('/notifications/{notification}/read', [TransactionController::class, 'markNotificationRead'])->name('notifications.read');
 });
 
 Route::middleware(['auth', 'verified', 'admin'])

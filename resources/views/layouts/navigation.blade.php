@@ -21,6 +21,12 @@
                     <x-nav-link :href="route('transactions.create')" :active="request()->routeIs('transactions.*')">
                         {{ __('Send') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.index')">
+                        {{ __('History') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.*')">
+                        {{ __('Notifications') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -81,6 +87,12 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('transactions.create')" :active="request()->routeIs('transactions.*')">
                 {{ __('Send') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('transactions.index')" :active="request()->routeIs('transactions.index')">
+                {{ __('History') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('notifications.index')" :active="request()->routeIs('notifications.*')">
+                {{ __('Notifications') }}
             </x-responsive-nav-link>
         </div>
 

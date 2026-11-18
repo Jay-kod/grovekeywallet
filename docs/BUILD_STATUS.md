@@ -2,7 +2,7 @@
 
 ## Current phase
 
-- Phase: Phase 4 - transaction preparation and submission
+- Phase: Phase 5 - transaction tracking and notifications
 - Status: Complete
 - Last updated: 2026-11-18
 - Repository: https://github.com/Jay-kod/grovekeywallet.git
@@ -24,7 +24,9 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 | FR-07 | Implemented | Recipient and precise wei amount review implemented |
 | FR-08 | Implemented | Browser-wallet `eth_sendTransaction` approval |
 | FR-09 | Implemented | Submitted transaction hash persisted; confirmation remains pending |
-| FR-10 to FR-12 | Missing | Status tracking and notifications not started |
+| FR-10 | Implemented | Browser receipt polling reconciles submitted, pending, confirmed, failed and unknown states |
+| FR-11 | Implemented | User-scoped transaction history and detail views |
+| FR-12 | Implemented | Submission, confirmation and failure notifications |
 | FR-11 | Partial | No persisted transactions yet; recent activity remains pending |
 | FR-13 | Partial | Protected administrator route; operational features pending |
 | FR-14 | Implemented | Logout test passes |
@@ -42,6 +44,7 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 | Wallet feature suite | Pass | 36 tests, 87 assertions |
 | Wallet balance UI tests | Pass | 38 feature tests, 94 assertions |
 | Transaction phase tests | Pass | 45 feature tests, 110 assertions |
+| Tracking phase tests | Pass | 51 feature tests, 124 assertions |
 
 ## Security review
 
@@ -57,7 +60,9 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 - Transaction signing is browser-wallet controlled
 - Server validation requires Sepolia chain ID and matching wallet ownership
 - Submission records a hash but does not claim confirmation
+- Receipt status is reconciled only from browser-provider receipt data
+- Pending, failed and unknown states are not converted into confirmed
 
 ## Next action
 
-Begin Phase 5: transaction receipt/status tracking, history and notifications.
+Begin Phase 6: administrator dashboard, operational monitoring and permitted settings.

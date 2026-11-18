@@ -412,6 +412,72 @@ if (transactionRoot) {
             explorerLink.href = `https://sepolia.etherscan.io/tx/${result.transaction_hash}`;
             explorerLink.hidden = false;
             setTransactionStatus('Transaction submitted. It is not confirmed until receipt verification.');
+
+            let pollAttempts = 0;
+            const pollStatus = async () => {
+                pollAttempts += 1;
+
+                try {
+                    const hexChainId = await injected.request({ method: 'eth_chainId' });
+                    if (Number.parseInt(hexChainId, 16) !== 11155111) {
+                        await persistReconciledStatus(result.transaction_id, 'unknown');
+                        resultStatus.textContent = 'Network changed. Status is unknown until Sepolia is selected again.';
+                        return;
+                    }
+
+                    const receipt = await injected.request({
+                        method: 'eth_getTransactionReceipt',
+                        params: [result.transaction_hash],
+                    });
+
+                    if (!receipt) {
+                        const transaction = await injected.request({
+                            method: 'eth_getTransactionByHash',
+                            params: [result.transaction_hash],
+                        });
+                        await persistReconciledStatus(result.transaction_id, transaction ? 'pending' : 'unknown');
+                        resultStatus.textContent = transaction
+                            ? 'Pending network confirmation.'
+                            : 'Status unknown; the transaction could not be found or verified yet.';
+                    } else {
+                        const status = BigInt(receipt.status) === 1n ? 'confirmed' : 'failed';
+                        await persistReconciledStatus(
+                            result.transaction_id,
+                            status,
+                            BigInt(receipt.blockNumber).toString(),
+                            BigInt(receipt.gasUsed).toString(),
+                        );
+                        resultStatus.textContent = status === 'confirmed'
+                            ? 'Confirmed on Ethereum Sepolia.'
+                            : 'Transaction failed or reverted on Ethereum Sepolia.';
+                        if (status === 'confirmed' || status === 'failed') return;
+                    }
+                } catch (error) {
+                    await persistReconciledStatus(result.transaction_id, 'unknown').catch(() => {});
+                    resultStatus.textContent = 'Unable to verify transaction status. The state remains unknown.';
+                }
+
+                if (pollAttempts < 30) window.setTimeout(pollStatus, 10000);
+            };
+
+            const persistReconciledStatus = async (transactionId, status, blockNumber = null, gasUsed = null) => {
+                await fetch(`/transactions/${transactionId}/reconcile`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        status,
+                        chain_id: 11155111,
+                        block_number: blockNumber,
+                        gas_used: gasUsed,
+                    }),
+                });
+            };
+
+            window.setTimeout(pollStatus, 5000);
         } catch (error) {
             if (error?.code === 4001) {
                 setTransactionStatus('Transaction approval was rejected. No transaction was submitted.');

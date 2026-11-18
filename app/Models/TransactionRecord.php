@@ -22,6 +22,10 @@ class TransactionRecord extends Model
         'gas_price_wei',
         'status',
         'submitted_at',
+        'gas_used',
+        'block_number',
+        'confirmed_at',
+        'last_checked_at',
     ];
 
     protected function casts(): array
@@ -29,6 +33,8 @@ class TransactionRecord extends Model
         return [
             'chain_id' => 'integer',
             'submitted_at' => 'datetime',
+            'confirmed_at' => 'datetime',
+            'last_checked_at' => 'datetime',
         ];
     }
 
