@@ -2,7 +2,7 @@
 
 ## Current phase
 
-- Phase: Phase 3 - balance and dashboard
+- Phase: Phase 4 - transaction preparation and submission
 - Status: Complete
 - Last updated: 2026-11-18
 - Repository: https://github.com/Jay-kod/grovekeywallet.git
@@ -21,7 +21,10 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 | FR-04 | Implemented | EIP-1193 connection and public wallet profile implemented |
 | FR-05 | Implemented | Public address and Sepolia network displayed |
 | FR-06 | Implemented | Browser-provider `eth_getBalance` retrieval with Sepolia labelling |
-| FR-07 to FR-12 | Missing | Transaction phases not started |
+| FR-07 | Implemented | Recipient and precise wei amount review implemented |
+| FR-08 | Implemented | Browser-wallet `eth_sendTransaction` approval |
+| FR-09 | Implemented | Submitted transaction hash persisted; confirmation remains pending |
+| FR-10 to FR-12 | Missing | Status tracking and notifications not started |
 | FR-11 | Partial | No persisted transactions yet; recent activity remains pending |
 | FR-13 | Partial | Protected administrator route; operational features pending |
 | FR-14 | Implemented | Logout test passes |
@@ -38,6 +41,7 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 | `npm run build` | Pass | Vite wallet assets built successfully |
 | Wallet feature suite | Pass | 36 tests, 87 assertions |
 | Wallet balance UI tests | Pass | 38 feature tests, 94 assertions |
+| Transaction phase tests | Pass | 45 feature tests, 110 assertions |
 
 ## Security review
 
@@ -50,7 +54,10 @@ Laravel 13.43.0 was initialized in the supplied empty repository. Blade authenti
 - Sepolia wallet enforcement is not implemented until Phase 2
 - Live balance is requested only when the provider reports chain ID 11155111
 - Invalid or unavailable RPC balances are never converted into success values
+- Transaction signing is browser-wallet controlled
+- Server validation requires Sepolia chain ID and matching wallet ownership
+- Submission records a hash but does not claim confirmation
 
 ## Next action
 
-Begin Phase 4: transaction preparation and browser-wallet submission.
+Begin Phase 5: transaction receipt/status tracking, history and notifications.

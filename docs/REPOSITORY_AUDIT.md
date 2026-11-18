@@ -53,6 +53,17 @@ The supplied repository was empty. The current implementation is a new Laravel 1
 - Manual refresh control and refresh timestamp
 - No server-side balance cache or fabricated balance data
 
+## Phase 4 implementation
+
+- Transaction record migration and model
+- Send-transaction form and review screen
+- Precision-safe ETH-to-wei conversion with BigInt
+- Browser-wallet `eth_estimateGas` and `eth_gasPrice`
+- Browser-wallet `eth_sendTransaction` approval
+- Wrong-network, insufficient-funds and rejection handling
+- Hash persistence only after wallet submission
+- Server ownership and Sepolia-chain validation
+
 ## Missing functionality
 
 Balance retrieval and transaction requirements remain for later phases. Full administrator monitoring remains pending.

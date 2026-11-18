@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('wallet.index')" :active="request()->routeIs('wallet.*')">
                         {{ __('Wallet') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('transactions.create')" :active="request()->routeIs('transactions.*')">
+                        {{ __('Send') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -75,6 +78,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('wallet.index')" :active="request()->routeIs('wallet.*')">
                 {{ __('Wallet') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('transactions.create')" :active="request()->routeIs('transactions.*')">
+                {{ __('Send') }}
             </x-responsive-nav-link>
         </div>
 

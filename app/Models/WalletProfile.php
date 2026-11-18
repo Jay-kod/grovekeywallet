@@ -29,4 +29,9 @@ class WalletProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function transactionRecords()
+    {
+        return $this->hasMany(TransactionRecord::class);
+    }
 }
